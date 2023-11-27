@@ -4,6 +4,7 @@ public enum Especialidade {
     NEUROLOGIA,
     PLASTICA,
     CARDIOLOGIA,
-    PEDIATRIA;
+    PEDIATRIA,
+    GERAL;
 
 }
