@@ -1,9 +1,6 @@
 package com.frmo.api.controller;
 
-import com.frmo.api.medico.DadosCadastroMedico;
-import com.frmo.api.medico.DadosListagemMedico;
-import com.frmo.api.medico.Medico;
-import com.frmo.api.medico.MedicoRepository;
+import com.frmo.api.medico.*;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,10 +23,18 @@ public class MedicoController {
     public void cadastrar(@RequestBody @Valid DadosCadastroMedico dados) {
         repository.save(new Medico(dados));
     }
+
     @GetMapping
     public Page<DadosListagemMedico> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao) {
         return repository
                 .findAll(paginacao)
                 .map(DadosListagemMedico::new);
+    }
+
+    @Transactional
+    @PutMapping
+    public void atualizar(@RequestBody @Valid DadosAtualizacaoMedico dados) {
+        var medico = repository.getReferenceById(dados.id());
+        medico.atualizarInformacoes(dados);
     }
 }
